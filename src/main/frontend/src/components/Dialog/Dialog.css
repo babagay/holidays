@@ -1,0 +1,68 @@
+.modal::backdrop {
+    background: hsl(0 0% 0% / 50%);
+}
+
+.modal {
+    max-width: 20rem;
+    padding: 1.4rem 1.4rem 0.4rem;
+    border: 0;
+    border-radius: 0.5rem;
+    position: fixed;
+    box-shadow: hsl(0 0% 0% / 10%) 0 0 0.5rem 0.25rem;
+}
+
+.dialog-button.hidden {
+    display: none;
+}
+
+.close-button {
+    background-color: #71a2ec;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px 5px 10px 10px;
+}
+
+.close-button:hover {
+    background-color: #4a78cb;
+}
+
+.save-button {
+    background-color: #82cb71;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px 5px 10px 10px;
+}
+
+.save-button:hover {
+    background-color: #409d2a;
+}
+
+.delete-button {
+    background-color: #cb7171;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px 5px 10px 10px;
+}
+
+.delete-button:hover {
+    background-color: #ad3030;
+}
+
+.dialog-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    _box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border: #aeb2b6 1px solid;
+    max-width: 100%;
+}
+
