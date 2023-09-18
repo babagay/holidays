@@ -15,8 +15,13 @@ mvn spring-boot:run
 ``` 
 
 ### Run front-end
+    Go to frontend root
 ``` 
 cd src\main\frontend
+``` 
+
+    Run a React application
+```
 npm start 
 ``` 
 				 
