@@ -12,6 +12,9 @@ function HolidayModal({onSubmit, isOpen, onClose, onRemove, yearCalendarState}) 
     const focusInputRef = useRef(null);
     const [formState, setFormState] = useState(initData);
 
+    const errors = {
+        title: ""
+    }
 
     useEffect(() => {
         if (isOpen && focusInputRef.current) {
@@ -28,8 +31,14 @@ function HolidayModal({onSubmit, isOpen, onClose, onRemove, yearCalendarState}) 
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        onSubmit(formState);
-        setFormState(initData);
+        if (formState.title.trim() === ''){
+            errors.title = "Title can not be empty"
+            console.error(errors.title);
+        } else {
+            errors.title = ""
+            onSubmit(formState);
+            setFormState(initData);
+        }
     };
 
     const handleInputChange = (event) => {
@@ -71,6 +80,7 @@ function HolidayModal({onSubmit, isOpen, onClose, onRemove, yearCalendarState}) 
                         onChange={handleInputChange}
                         required
                     />
+                    {errors.title && <span className="error">{errors.title}</span>}
                     <input
                         type="hidden"
                         id="date"

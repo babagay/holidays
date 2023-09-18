@@ -78,9 +78,48 @@
 			</plugin>
 
 			<plugin>
+				<!-- install node and modules (mvn clean install) -->
+				<!-- run back-end (mvn spring-boot:run) -->
+				<!-- run front-end (npm start) -->
+
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
 				<version>1.14.0</version>
+
+				<configuration>
+					<workingDirectory>src/main/frontend</workingDirectory>
+					<installDirectory>target</installDirectory>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<configuration>
+							<nodeVersion>v18.17.1</nodeVersion> <!-- Specify the desired Node.js version -->
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm build</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run build</arguments> <!-- Specify your npm build command here -->
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
