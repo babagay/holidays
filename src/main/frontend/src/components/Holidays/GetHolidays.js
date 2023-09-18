@@ -26,17 +26,30 @@ const fetchItems = async (url) => {
 };
 
 
-
 /**
- * GetHolidays fetcher component
+ * GetHolidays fetcher component to get events by year
  */
 function GetHolidays({yearCalendarState, setYearCalendarState}) {
-    // todo: how to use SWR inside useEffect
-    // const {holidayEventsData, getHolidayEventsError, isLoading} = useFetchByYear(yearCalendarState.selectedYear);
 
+    // [!] Solution with SWR
+    // There is a defect: initially we have to select another year and then select the current one
+    // then, the fetch will be triggered
+    // So, needs to be fixed
+    // const {holidayEventsData, getHolidayEventsError, isLoading} = useFetchByYear(yearCalendarState.selectedYear);
+    //
+    // useEffect(() => {
+    //     console.log(holidayEventsData, getHolidayEventsError)
+    //     if (getHolidayEventsError) {
+    //         console.error(getHolidayEventsError);
+    //     } else {
+    //         setYearCalendarState({...yearCalendarState, holidayEvents: holidayEventsData});
+    //     }
+    // }, [yearCalendarState.selectedYear]);
+
+
+    // [!] Solution with pure fetch()
     const {apiUrl} = useConfig();
 
-    // get events by year
     useEffect(() => {
         fetchItems(`${apiUrl}/${yearCalendarState.selectedYear}`)
             .then((data) => {

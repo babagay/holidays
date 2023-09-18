@@ -4,7 +4,6 @@ import interactionPlugin from "@fullcalendar/interaction";
 import multiMonthPlugin from "@fullcalendar/multimonth";
 import './YearCalendar.css';
 import {initYearCalendarState} from "../../App";
-import {Tooltip} from "react-tooltip";
 import 'react-tooltip/dist/react-tooltip.css'
 
 function YearCalendar({yearCalendarState, setYearCalendarState, setHolidayModalOpen}) {
@@ -58,7 +57,6 @@ function YearCalendar({yearCalendarState, setYearCalendarState, setHolidayModalO
             setYearCalendarState({...yearCalendarState, selectedYear: newYear});
         }
     };
-
 
     return (
         <div>
