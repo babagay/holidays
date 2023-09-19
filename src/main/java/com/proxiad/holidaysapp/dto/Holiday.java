@@ -1,7 +1,6 @@
 package com.proxiad.holidaysapp.dto;
 
-import java.time.ZonedDateTime;
-import java.util.Date;
+import java.time.ZonedDateTime; 
 
 import lombok.Data;
 
