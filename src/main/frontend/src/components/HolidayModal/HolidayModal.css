@@ -1,11 +1,11 @@
-.form-row + .form-row {
+.Form_row + .Form_row {
     margin-top: 1rem;
 }
 
-.form-row label,
-.form-row input,
-.form-row select,
-.form-row button {
+.Form_row label,
+.Form_row input,
+.Form_row select,
+.Form_row button {
     width: 100%;
     display: block;
 }
@@ -14,6 +14,6 @@
     display: none;
 }
 
-.form-row label {
-    color: #282c34;
+.Form_row label {
+    color: var(--bourso-grey);
 }

@@ -3,7 +3,6 @@ package com.proxiad.holidaysapp.service;
 import com.proxiad.holidaysapp.entity.Holiday;
 import com.proxiad.holidaysapp.repository.HolidayRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

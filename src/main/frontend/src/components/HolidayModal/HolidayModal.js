@@ -69,7 +69,7 @@ function HolidayModal({onSubmit, isOpen, onClose, onRemove, yearCalendarState}) 
                 isSaveBtn={isSaveBtn} handleSaveButton={handleSubmit}
                 isDeleteBtn={isDeleteBtn} handleDeleteButton={handleDelete}>
             <form action="">
-                <div className="form-row">
+                <div className="Form_row">
                     <label htmlFor="title">Holiday title</label>
                     <input
                         ref={focusInputRef}
@@ -80,7 +80,6 @@ function HolidayModal({onSubmit, isOpen, onClose, onRemove, yearCalendarState}) 
                         onChange={handleInputChange}
                         required
                     />
-                    {errors.title && <span className="error">{errors.title}</span>}
                     <input
                         type="hidden"
                         id="date"

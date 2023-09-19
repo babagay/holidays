@@ -57,11 +57,15 @@ maven-resources-plugin (copy front-end code to artifact):
     <outputDirectory>${project.build.directory}/classes/static</outputDirectory>
     ...
     <resources>
-				<resource>
-					<directory>${project.basedir}/src/main/frontend/build</directory>
+		<resource>
+	<directory>${project.basedir}/src/main/frontend/build</directory>
 ```
+This will execute the frontend-maven-plugin to install Node.js, npm, and build the React frontend. 
+The maven-resources-plugin will then copy the React build output into the WEB-INF/classes/static directory of the WAR file.
 
 Other config is presented in pom.xml and its pretty standard.
+
+You can deploy the generated WAR file to your servlet container like Tomcat, Jetty, or any other compatible container.
 
 ### Build a project
 There is a command to build a project
@@ -77,3 +81,11 @@ mvn spring-boot:run
 ### Testing  
 After up and running you can test the app at
 http://localhost:8080
+
+Note: in case of changes you need to run 'mvn clean install' again to see differences on UI
+
+## TODO
+Avoid creating a new record via PUT request
+Implement fetching via SWR
+Implement tooltips on events to see the whole Title
+Implement custom useForm hook

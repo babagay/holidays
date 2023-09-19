@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import './Dialog.css'
+import classNames from "classnames";
 
 function Dialog({isOpen, isSaveBtn, isDeleteBtn, onClose, children, handleSaveButton, handleDeleteButton}) {
     const [isModalOpen, setModalOpen] = useState(isOpen);
@@ -7,8 +8,16 @@ function Dialog({isOpen, isSaveBtn, isDeleteBtn, onClose, children, handleSaveBu
     const [isDeleteBtnDisplay, setIsDeleteBtnDisplay] = useState(isDeleteBtn);
     const modalRef = useRef(null);
 
-    const saveBtnClass = `dialog-button save-button ${isSaveBtnDisplay ? '' : 'hidden'}`;
-    const deleteBtnClass = `dialog-button delete-button ${isDeleteBtnDisplay ? '' : 'hidden'}`;
+    const saveBtnClass =
+        classNames('Dialog_Button', {
+            'Save_Button': true,
+            'Hidden': !isSaveBtnDisplay
+        });
+
+    const deleteBtnClass = classNames('Dialog_Button', {
+        'Delete_Button': true,
+        'Hidden': !isDeleteBtnDisplay
+    });
 
     const handleCloseModal = () => {
         if (onClose) {
@@ -53,15 +62,17 @@ function Dialog({isOpen, isSaveBtn, isDeleteBtn, onClose, children, handleSaveBu
     }, [isModalOpen]);
 
     return (
-        <dialog ref={modalRef} className="modal">
-            <div className="dialog-content">
+        <dialog ref={modalRef} className="Modal">
+            <div className="Dialog_Content">
                 {children}
             </div>
-            <button className="close-button" onClick={handleCloseModal}>
+            <button className="Close_Button" onClick={handleCloseModal}>
                 Close
             </button>
             <button className={saveBtnClass} onClick={handleSaveBtn}>Save</button>
-            <button className={deleteBtnClass} onClick={handleDeleteBtn}>Delete</button>
+            <button className={deleteBtnClass}
+                    onClick={handleDeleteBtn}>Delete
+            </button>
         </dialog>
     );
 

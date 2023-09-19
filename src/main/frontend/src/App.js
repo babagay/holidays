@@ -42,9 +42,9 @@ function App() {
         handleCloseHolidayModal();
     };
 
-    const handleOpenHolidayModal = () => {
-        setHolidayModalOpen(true);
-    };
+    // const handleOpenHolidayModal = () => {
+    //     setHolidayModalOpen(true);
+    // };
 
     const handleCloseHolidayModal = () => {
         setHolidayModalOpen(false);
@@ -83,11 +83,11 @@ function App() {
     };
 
     return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
+        <div className="Holidays_app">
+            <header className="Header">
+                <img src={logo} className="App_logo" alt="logo"/>
             </header>
-            <div className="App-body">
+            <div className="Body">
                 <>
                     <GetHolidays
                         yearCalendarState={yearCalendarState}

@@ -1,8 +1,8 @@
-.modal::backdrop {
+.Modal::backdrop {
     background: hsl(0 0% 0% / 50%);
 }
 
-.modal {
+.Modal {
     max-width: 20rem;
     padding: 1.4rem 1.4rem 0.4rem;
     border: 0;
@@ -11,12 +11,12 @@
     box-shadow: hsl(0 0% 0% / 10%) 0 0 0.5rem 0.25rem;
 }
 
-.dialog-button.hidden {
+.Dialog_Button.Hidden {
     display: none;
 }
 
-.close-button {
-    background-color: #71a2ec;
+.Close_Button {
+    background-color: var(--bourso-light-blue);
     color: white;
     border: none;
     padding: 8px 16px;
@@ -25,12 +25,12 @@
     margin: 10px 5px 10px 10px;
 }
 
-.close-button:hover {
-    background-color: #4a78cb;
+.Close_Button:hover {
+    background-color: var(--bourso-dark-blue);
 }
 
-.save-button {
-    background-color: #82cb71;
+.Save_Button {
+    background-color: var(--bourso-light-green);
     color: white;
     border: none;
     padding: 8px 16px;
@@ -39,12 +39,12 @@
     margin: 10px 5px 10px 10px;
 }
 
-.save-button:hover {
-    background-color: #409d2a;
+.Save_Button:hover {
+    background-color: var(--bourso-dark-green);
 }
 
-.delete-button {
-    background-color: #cb7171;
+.Delete_Button {
+    background-color: var(--bourso-light-red);
     color: white;
     border: none;
     padding: 8px 16px;
@@ -53,16 +53,15 @@
     margin: 10px 5px 10px 10px;
 }
 
-.delete-button:hover {
-    background-color: #ad3030;
+.Delete_Button:hover {
+    background-color: var(--bourso-dark-red);
 }
 
-.dialog-content {
+.Dialog_Content {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
-    _box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    border: #aeb2b6 1px solid;
+    border: var(--bourso-light-grey) 1px solid;
     max-width: 100%;
 }
 

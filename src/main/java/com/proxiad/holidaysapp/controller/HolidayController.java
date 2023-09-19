@@ -1,19 +1,16 @@
 package com.proxiad.holidaysapp.controller;
 
 import com.proxiad.holidaysapp.Util;
+import com.proxiad.holidaysapp.dto.Holiday;
 import com.proxiad.holidaysapp.dto.HolidayResponseDto;
 import com.proxiad.holidaysapp.exception.HolidayNotCreatedException;
 import com.proxiad.holidaysapp.exception.HolidayNotFoundException;
 import com.proxiad.holidaysapp.exception.HolidayNotUpdatedException;
 import com.proxiad.holidaysapp.service.HolidayService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.proxiad.holidaysapp.dto.Holiday;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.List;
@@ -61,8 +58,8 @@ public class HolidayController {
 
         try {
             com.proxiad.holidaysapp.entity.Holiday entity = util.holidayDtoToEntity(holiday);
-            holidayService.addHoliday(entity);
-            dto = util.holidayEntityToDto(Collections.singletonList(entity));
+            com.proxiad.holidaysapp.entity.Holiday newEntity = holidayService.addHoliday(entity);
+            dto = util.holidayEntityToDto(Collections.singletonList(newEntity));
         } catch (Exception e) {
             throw new HolidayNotCreatedException("Can not add holiday");
         }
@@ -76,6 +73,13 @@ public class HolidayController {
     public ResponseEntity<HolidayResponseDto> updateHoliday(@RequestBody Holiday holiday) {
 
         try {
+            if (holiday.getId() == null) {
+                throw new Exception("Id can not be null");
+            }
+            com.proxiad.holidaysapp.entity.Holiday existentEntity = holidayService.getById(holiday.getId());
+            if (existentEntity.getId() == null) {
+                throw new Exception("Holiday not exists");
+            }
             com.proxiad.holidaysapp.entity.Holiday entity = util.holidayDtoToEntity(holiday);
             holidayService.updateHoliday(entity);
         } catch (Exception e) {
