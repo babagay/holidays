@@ -16,9 +16,9 @@ public class Holiday {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column
+    @Column(nullable = false)
     String title;
 
-    @Column(name = "HOLIDAYDATE")
+    @Column(name = "HOLIDAYDATE", nullable = false)
     ZonedDateTime holidayDate;
 }

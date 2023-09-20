@@ -1,16 +1,15 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import {useConfig} from '../Context/Config.js';
 import useSWR from "swr";
 
 /**
  * GetHolidays fetcher by year hook
- * @param year
- * @returns {{isLoading: boolean, holidayEventsData: any, getHolidayEventsError: any}}
  */
 const useFetchByYear = (year) => {
     const {apiUrl} = useConfig();
+    const getUrl = `${apiUrl}?year=${year}`;
     const eventFetcher = (url) => fetch(url).then((res) => res.json());
-    const {data, error, isLoading} = useSWR(`${apiUrl}/${year}`, eventFetcher);
+    const {data, error, isLoading} = useSWR(getUrl, eventFetcher);
 
     return {
         holidayEventsData: data,
@@ -32,35 +31,31 @@ const fetchItems = async (url) => {
 function GetHolidays({yearCalendarState, setYearCalendarState}) {
 
     // [!] Solution with SWR
-    // There is a defect: initially we have to select another year and then select the current one
-    // then, the fetch will be triggered
-    // So, needs to be fixed
-    // const {holidayEventsData, getHolidayEventsError, isLoading} = useFetchByYear(yearCalendarState.selectedYear);
-    //
-    // useEffect(() => {
-    //     console.log(holidayEventsData, getHolidayEventsError)
-    //     if (getHolidayEventsError) {
-    //         console.error(getHolidayEventsError);
-    //     } else {
-    //         setYearCalendarState({...yearCalendarState, holidayEvents: holidayEventsData});
-    //     }
-    // }, [yearCalendarState.selectedYear]);
+    const {holidayEventsData, getHolidayEventsError} = useFetchByYear(yearCalendarState.selectedYear);
+
+    useEffect(() => {
+        if (getHolidayEventsError) {
+            console.error(getHolidayEventsError);
+        } else {
+            setYearCalendarState({...yearCalendarState, holidayEvents: holidayEventsData});
+        }
+    }, [holidayEventsData]);
 
 
     // [!] Solution with pure fetch()
-    const {apiUrl} = useConfig();
-
-    useEffect(() => {
-        fetchItems(`${apiUrl}/${yearCalendarState.selectedYear}`)
-            .then((data) => {
-                if (data.error) {
-                    console.error(data.error);
-                }
-                else {
-                    setYearCalendarState({...yearCalendarState, holidayEvents: data});
-                }
-            });
-    }, [yearCalendarState.selectedYear]);
+    // const {apiUrl} = useConfig();
+    //
+    // useEffect(() => {
+    //     fetchItems(`${apiUrl}?year=${yearCalendarState.selectedYear}`)
+    //         .then((data) => {
+    //             if (data.error) {
+    //                 console.error(data.error);
+    //             }
+    //             else {
+    //                 setYearCalendarState({...yearCalendarState, holidayEvents: data});
+    //             }
+    //         });
+    // }, [yearCalendarState.selectedYear]);
 
 }
 

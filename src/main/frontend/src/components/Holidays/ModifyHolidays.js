@@ -47,19 +47,19 @@ function ModifyHolidays({holidayDTO, callbacks}) {
 
         if (holidayDTO.add) {
             // insert Holiday
-            handleAddUpdateDeleteItem(`${apiUrl}/holiday`, holidayDTO.holiday, POST_VERB)
+            handleAddUpdateDeleteItem(`${apiUrl}`, holidayDTO.holiday, POST_VERB)
                 .then((data) =>
                     processOutput(data, callbacks.onCreate)
                 );
         } else if (holidayDTO.update) {
             // update Holiday
-            handleAddUpdateDeleteItem(`${apiUrl}/holiday`, holidayDTO.holiday, PUT_VERB)
+            handleAddUpdateDeleteItem(`${apiUrl}`, holidayDTO.holiday, PUT_VERB)
                 .then((data) =>
                     processOutput(data, callbacks.onUpdate)
                 );
         } else if (holidayDTO.remove) {
             // delete Holiday
-            handleAddUpdateDeleteItem(`${apiUrl}/holiday`, holidayDTO.holiday, DEL_VERB)
+            handleAddUpdateDeleteItem(`${apiUrl}`, holidayDTO.holiday, DEL_VERB)
                 .then((data) =>
                     processOutput(data, callbacks.onDelete)
                 );

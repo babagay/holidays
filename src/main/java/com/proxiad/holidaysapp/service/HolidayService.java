@@ -20,6 +20,10 @@ public class HolidayService {
         return holidayRepository.findHolidayById(id).stream().findFirst().orElse(null);
     }
 
+    public List<Holiday> getHolidays() {
+        return holidayRepository.findAll();
+    }
+
     public List<Holiday> getHolidaysByYear(int year) {
         return holidayRepository.findHolidaysByYear(year);
     }

@@ -28,7 +28,7 @@ public class HolidayController {
         this.util = util;
     }
 
-    @GetMapping("/holiday/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<HolidayResponseDto> getHoliday(@PathVariable Integer id) {
 
         HolidayResponseDto response = new HolidayResponseDto();
@@ -44,15 +44,25 @@ public class HolidayController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{year}")
-    public ResponseEntity<List<Holiday>> getHolidayByYear(@PathVariable Integer year) {
+    // todo - can we avoid "/" here (to make url 'http://localhost/holidays')?
+    @GetMapping("/")
+    public ResponseEntity<List<Holiday>> getHolidayByYear() {
+        List<com.proxiad.holidaysapp.entity.Holiday> holidays = holidayService.getHolidays();
+        List<Holiday> dto = util.holidayEntityToDto(holidays);
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Holiday>> getHolidayByYear(@RequestParam(name = "year") Integer year) {
         List<com.proxiad.holidaysapp.entity.Holiday> holidays = holidayService.getHolidaysByYear(year);
         List<Holiday> dto = util.holidayEntityToDto(holidays);
 
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @PostMapping("/holiday")
+
+    @PostMapping("")
     public ResponseEntity<HolidayResponseDto> addHoliday(@RequestBody Holiday holiday) {
         List<Holiday> dto;
 
@@ -69,7 +79,7 @@ public class HolidayController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/holiday")
+    @PutMapping("")
     public ResponseEntity<HolidayResponseDto> updateHoliday(@RequestBody Holiday holiday) {
 
         try {
@@ -93,7 +103,7 @@ public class HolidayController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/holiday")
+    @DeleteMapping("")
     public ResponseEntity<HolidayResponseDto> deleteHoliday(@RequestBody Holiday holiday) {
 
         try {
@@ -104,7 +114,13 @@ public class HolidayController {
             ex.setHttpStatus(HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        HolidayResponseDto response = new HolidayResponseDto();
+        com.proxiad.holidaysapp.entity.Holiday existentEntity = holidayService.getById(holiday.getId());
+        if (existentEntity == null) {
+            response.setMessage("Deleted");
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }
