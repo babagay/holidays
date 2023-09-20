@@ -5,6 +5,8 @@ import multiMonthPlugin from "@fullcalendar/multimonth";
 import './YearCalendar.css';
 import {initYearCalendarState} from "../../App";
 import 'react-tooltip/dist/react-tooltip.css'
+import {func} from "prop-types";
+import {yearCalendarStatePropType} from "../Context/Shared";
 
 function YearCalendar({yearCalendarState, setYearCalendarState, setHolidayModalOpen}) {
 
@@ -78,5 +80,10 @@ function YearCalendar({yearCalendarState, setYearCalendarState, setHolidayModalO
     );
 }
 
+YearCalendar.propTypes = {
+    yearCalendarState: yearCalendarStatePropType.isRequired,
+    setYearCalendarState: func.isRequired,
+    setHolidayModalOpen: func.isRequired
+};
 
 export default YearCalendar;

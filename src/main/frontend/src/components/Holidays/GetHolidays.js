@@ -1,6 +1,8 @@
 import {useEffect} from 'react';
 import {useConfig} from '../Context/Config.js';
 import useSWR from "swr";
+import {func} from "prop-types";
+import {yearCalendarStatePropType} from "../Context/Shared";
 
 /**
  * GetHolidays fetcher by year hook
@@ -58,5 +60,10 @@ function GetHolidays({yearCalendarState, setYearCalendarState}) {
     // }, [yearCalendarState.selectedYear]);
 
 }
+
+GetHolidays.propTypes = {
+    yearCalendarState: yearCalendarStatePropType.isRequired,
+    setYearCalendarState: func.isRequired
+};
 
 export default GetHolidays;

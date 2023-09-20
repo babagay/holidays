@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
 import Dialog from "../Dialog/Dialog";
 import './HolidayModal.css';
+import {bool, func} from "prop-types";
+import {holidayPropType, yearCalendarStatePropType} from "../Context/Shared";
 
 const initData = {
     id: 0,
@@ -31,7 +33,7 @@ function HolidayModal({onSubmit, isOpen, onClose, onRemove, yearCalendarState}) 
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (formState.title.trim() === ''){
+        if (formState.title.trim() === '') {
             errors.title = "Title can not be empty"
             console.error(errors.title);
         } else {
@@ -97,5 +99,17 @@ function HolidayModal({onSubmit, isOpen, onClose, onRemove, yearCalendarState}) 
         </Dialog>
     );
 }
+
+HolidayModal.propTypes = {
+    yearCalendarState: yearCalendarStatePropType.isRequired,
+    isOpen: bool.isRequired,
+    onSubmit: func.isRequired,
+    onClose: func,
+    onRemove: func
+};
+
+HolidayModal.propTypes.onSubmit.propTypes = {
+    inputObject: holidayPropType.isRequired
+};
 
 export default HolidayModal;

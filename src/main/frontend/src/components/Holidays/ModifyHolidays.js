@@ -1,6 +1,8 @@
 import {useEffect} from "react";
 import useSWR, {mutate} from "swr";
 import {useConfig} from "../Context/Config";
+import {bool, shape, func} from "prop-types";
+import {holidayPropType} from "../Context/Shared";
 
 
 const POST_VERB = "POST";
@@ -43,6 +45,7 @@ function ModifyHolidays({holidayDTO, callbacks}) {
 
     const {apiUrl} = useConfig();
 
+
     useEffect(() => {
 
         if (holidayDTO.add) {
@@ -69,5 +72,20 @@ function ModifyHolidays({holidayDTO, callbacks}) {
 
     }, [holidayDTO]);
 }
+
+ModifyHolidays.propTypes = {
+    holidayDTO: shape({
+        add: bool,
+        update: bool,
+        remove: bool,
+        holiday: holidayPropType
+    }),
+    callbacks: shape({
+        onCreate: func.isRequired,
+        onUpdate: func,
+        onDelete: func,
+        onFinish: func
+    })
+};
 
 export default ModifyHolidays;

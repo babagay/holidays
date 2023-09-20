@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import './Dialog.css'
 import classNames from "classnames";
+import {bool, func, object} from "prop-types";
 
 function Dialog({isOpen, isSaveBtn, isDeleteBtn, onClose, children, handleSaveButton, handleDeleteButton}) {
     const [isModalOpen, setModalOpen] = useState(isOpen);
@@ -77,5 +78,15 @@ function Dialog({isOpen, isSaveBtn, isDeleteBtn, onClose, children, handleSaveBu
     );
 
 }
+
+Dialog.propTypes = {
+    isOpen: bool.isRequired,
+    isSaveBtn: bool.isRequired,
+    isDeleteBtn: bool,
+    onClose: func,
+    children: object,
+    handleSaveButton: func.isRequired,
+    handleDeleteButton: func
+};
 
 export default Dialog;

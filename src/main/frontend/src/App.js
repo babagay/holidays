@@ -6,16 +6,24 @@ import {useState} from "react";
 import HolidayModal from "./components/HolidayModal/HolidayModal";
 import ModifyHolidays from "./components/Holidays/ModifyHolidays";
 
-const initHolidayDTO = {add: false, update: false, remove: false, holiday: {}};
+const initHolidayDTO = {
+    add: false, update: false, remove: false,
+    holiday: {
+        id: 0,
+        title: "",
+        date: ""
+    }
+};
 export const initYearCalendarState = {
     holidayEvents: [],
-    selectedYear:  new Date().getFullYear(),
+    selectedYear: new Date().getFullYear(),
     currentEvent: {
         title: "",
         date: "",
         id: 0
     }
-}
+};
+
 
 function App() {
 
@@ -42,9 +50,6 @@ function App() {
         handleCloseHolidayModal();
     };
 
-    // const handleOpenHolidayModal = () => {
-    //     setHolidayModalOpen(true);
-    // };
 
     const handleCloseHolidayModal = () => {
         setHolidayModalOpen(false);
