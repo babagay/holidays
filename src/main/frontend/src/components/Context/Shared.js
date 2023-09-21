@@ -1,4 +1,4 @@
-import {array, number, shape, string} from "prop-types";
+import PropTypes, {arrayOf, number, shape, string} from "prop-types";
 
 export const holidayPropType = shape({
     id: number,
@@ -7,7 +7,11 @@ export const holidayPropType = shape({
 });
 
 export const yearCalendarStatePropType = shape({
-    holidayEvents: array,
+    holidayEvents: arrayOf(PropTypes.shape({
+        id: number,
+        title: string,
+        date: string
+    })),
     selectedYear: number,
     currentEvent: holidayPropType
 });

@@ -89,3 +89,11 @@ Avoid creating a new record via PUT request
 Implement fetching via SWR
 Implement tooltips on events to see the whole Title
 Implement custom useForm hook
+
+### Storybook
+Go to frontend directory and run the storybook server:
+```
+npm run storybook
+```
+Storybook is reachable at http://localhost:6006
+There we can check the appearance of different views of components, e.g. HolidayModal. 
