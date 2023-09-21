@@ -82,15 +82,15 @@ mvn spring-boot:run
 After up and running you can test the app at
 http://localhost:8080
 
+It is valid for case when you run 'mvn clean install' command
+
 Note: in case of changes you need to run 'mvn clean install' again to see differences on UI
 
-## TODO
-Avoid creating a new record via PUT request
-Implement fetching via SWR
-Implement tooltips on events to see the whole Title
-Implement custom useForm hook
+## TODO list 
+* Implement tooltips on events to see the whole Title
+* Implement custom useForm hook
 
-### Storybook
+## Storybook
 Go to frontend directory and run the storybook server:
 ```
 npm run storybook
