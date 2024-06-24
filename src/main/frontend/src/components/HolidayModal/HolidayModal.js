@@ -108,8 +108,9 @@ HolidayModal.propTypes = {
     onRemove: func
 };
 
-HolidayModal.propTypes.onSubmit.propTypes = {
+HolidayModal.propTypes = {
+    onSubmit: func.isRequired,
     inputObject: holidayPropType.isRequired
-};
+}
 
 export default HolidayModal;
