@@ -16,4 +16,5 @@ public interface HolidayRepository extends ListCrudRepository<Holiday,Integer> {
     List<Holiday> findHolidaysByYear(@Param("year") int year);
 
     List<Holiday> findHolidayById(@Param("id") int id);
+
 }

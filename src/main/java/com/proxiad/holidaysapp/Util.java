@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -34,5 +35,12 @@ public class Util {
         entity.setHolidayDate(holiday.getDate());
 
         return entity;
+    }
+
+    public static Holiday getTestHoliday(String comment) {
+        Holiday holiday = new Holiday();
+        holiday.setTitle("Test Holiday [" + comment + "] " + UUID.randomUUID().toString().substring(0, 8));
+        holiday.setHolidayDate(ZonedDateTime.now());
+        return holiday;
     }
 }

@@ -31,7 +31,7 @@ public class HolidayController {
     @GetMapping("/{id}")
     public ResponseEntity<HolidayResponseDto> getHoliday(@PathVariable Integer id) {
 
-        HolidayResponseDto response = new HolidayResponseDto();
+        var response = new HolidayResponseDto();
 
         try {
             com.proxiad.holidaysapp.entity.Holiday holiday = holidayService.getById(id);
@@ -45,11 +45,19 @@ public class HolidayController {
     }
 
     // todo - can we avoid "/" here (to make url 'http://localhost/holidays')?
+    // todo / add year path param
     @GetMapping("/")
     public ResponseEntity<List<Holiday>> getHolidayByYear() {
         List<com.proxiad.holidaysapp.entity.Holiday> holidays = holidayService.getHolidays();
         List<Holiday> dto = util.holidayEntityToDto(holidays);
 
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Holiday>> getAllHolidays() {
+        List<com.proxiad.holidaysapp.entity.Holiday> holidays = holidayService.getHolidays();
+        List<Holiday> dto = util.holidayEntityToDto(holidays);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 

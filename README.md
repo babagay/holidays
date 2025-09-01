@@ -9,6 +9,8 @@ Simple React and Spring boot application
 mvn spring-boot:run
 ``` 
 
+Alterbatively, just start main()
+
 ### Run front-end
 #### Go to frontend root
 ``` 
@@ -20,6 +22,7 @@ cd src\main\frontend
 npm start 
 ``` 
 
+check: http://localhost:3000
 
 
 ## Testing
@@ -31,9 +34,14 @@ and see UI on http://localhost:8080
 
 ### Other endpoints to test Spring app
 app status: http://localhost:8080/actuator/health
+
 H2 console: http://localhost:8080/h2
 
+    url:jdbc:h2:file:~/data/maindb user:SA password:password
+    Data stored in <currentUserFolder>/data/maindb.mv.db
+
 Note: The DB inits each time you run a back end app. All new records will be removed
+Note: tests using a real DB will fail due to DB file will be locked
 
 ### A more complex case
 You can compile a single artifact (war file) which included back-end and front-end inside.
@@ -70,7 +78,11 @@ You can deploy the generated WAR file to your servlet container like Tomcat, Jet
 ### Build a project
 There is a command to build a project
 ```
-mvn clean install
+mvn clean install # full build including npm install and execution the all tests
+    or 
+mvn install "-Dskip.npm" "-DskipTests"
+    or
+mvn clean install -DskipFrontend "-Dmaven.test.skip=true" # skip npm install and tests
 ```
 
 Then you can run it

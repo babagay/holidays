@@ -1,0 +1,74 @@
+holidays:
+  api:
+    path: /holidays
+    path.all: /holidays/all
+rest:
+  template:
+    rootUrl: http://localhost:8080
+# Test configuration for H2 in-memory database
+spring:
+  # DataSource configuration
+  datasource:
+    url: "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  # JPA & Hibernate configuration
+  jpa:
+    # Database dialect
+    database-platform: org.hibernate.dialect.H2Dialect
+
+    # DDL generation settings
+    hibernate:
+      ddl-auto:  none    # create, create-drop, update, validate, none
+    generate-ddl: false
+
+    # SQL logging
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true       # Format SQL queries
+        use_sql_comments: true # Show comments in SQL
+        dialect: org.hibernate.dialect.H2Dialect
+
+  # H2 Database Console (accessible at /h2-console)
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        trace: false
+        web-allow-others: false
+
+  # SQL initialization
+  # Если используешь ddl-auto = create-drop и generate-ddl=true, Hibernate сам управляет схемой.
+  # Если хочешь контролировать всё SQL-скриптами, то ставишь: ddl-auto=none, mode=always, schema-locations=<path>
+  # Тогда Hibernate не трогает схему, а Spring выполняет SQL-скрипты
+  sql:
+    init:
+      mode: always            # always, embedded, never
+      platform: h2            # Platform for SQL scripts
+      data-locations: classpath:test-data.sql        # seed data; common data in borders of test class
+      schema-locations: classpath:schema-h2.sql
+
+  # Jackson configuration (optional)
+  jackson:
+    date-format: "yyyy-MM-dd HH:mm:ss"
+    time-zone: "UTC"
+
+# Logging configuration
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.hibernate: INFO
+    org.hibernate.SQL: DEBUG          # Log SQL queries
+    org.hibernate.type: TRACE         # Log query parameters
+    org.hibernate.stat: DEBUG         # Log Hibernate statistics
+    com.proxiad.holidaysapp: DEBUG    # Your application package
+
+# Test-specific properties
+test:
+  database:
+    replace: none

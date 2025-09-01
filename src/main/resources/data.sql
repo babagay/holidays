@@ -1,1 +1,0 @@
-insert into holidays (title, holidayDate) values ('Knowledge day', '2023-09-15T00:00:00.000Z');

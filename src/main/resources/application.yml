@@ -1,38 +1,64 @@
 server:
   port: 8080
-
 spring:
   datasource:
-    url: jdbc:h2:file:~/data/demo
+    url: jdbc:h2:file:~/data/maindb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#    url: jdbc:h2:file:~/data/demo
+#    url: jdbc:h2:mem:maindb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#    url: jdbc:h2:tcp://localhost/~/data/demo
     username: sa
     password: password
     driverClassName: org.h2.Driver
   sql:
     init:
       platform: h2
-      mode: always
+      mode: never # always - exec scripts on each app launch
+#      schema-locations: classpath:schema-h2.sql
+#      data-locations: classpath:data.sql
   h2:
     console:
       path: /h2
       settings:
         web-allow-others: false
   jpa:
-      show-sql: true
-      defer-datasource-initialization: true
+    show-sql: true
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update # none
+#    properties:
+#      javax:
+#        persistence:
+#          schema-generation:
+#            scripts:
+#              action: create
+#              create-target: schema.sql
+#              create-source: metadata
       hibernate:
-        ddl-auto: none
-      properties:
-        javax:
-          persistence:
-            schema-generation:
-              scripts:
-                action: create
-                create-target: schema.sql
-                create-source: metadata
-        hibernate:
-          format_sql: true
-          dialect: org.hibernate.dialect.H2Dialect
-      database-platform: org.hibernate.dialect.H2Dialect
+        format_sql: true # Форматировать SQL для удобного чтения
+        dialect: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.H2Dialect
+  output:
+    ansi:
+      # Включить цветной вывод (для поддержки ANSI в консоли)
+      enabled: ALWAYS
+logging:
+  level:
+    root: INFO
+    org.springframework: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.web: DEBUG
+    com.example: DEBUG
+  # Красивое форматирование логов
+#  pattern:
+#    console: %clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID}){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx
 test:
   bean:
     name: SomeTestBean
+rest:
+  template:
+    rootUrl: http://localhost:8080
+holidays:
+  api:
+    path: /holidays
+    path.all: /holidays/all
