@@ -1,6 +1,8 @@
 package com.proxiad.holidaysapp.client;
 
 import com.proxiad.holidaysapp.Util;
+import com.proxiad.holidaysapp.config.TestRestTemplateConfig;
+import com.proxiad.holidaysapp.config.TestSecurityConfig;
 import com.proxiad.holidaysapp.dto.HolidayResponseDto;
 import com.proxiad.holidaysapp.entity.Holiday;
 import com.proxiad.holidaysapp.repository.HolidayRepository;
@@ -17,8 +19,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEnti
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -83,6 +88,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @AutoConfigureTestEntityManager
+@Import({TestSecurityConfig.class, TestRestTemplateConfig.class}) // import security config for tests
+@ActiveProfiles("test")
 @Slf4j
 class HolidaysClientIntegrationTestHttpReal {
 
@@ -170,6 +177,7 @@ class HolidaysClientIntegrationTestHttpReal {
 
         val id = holiday.getId();
         holidayId.set(id);
+        holidayTitle.set(holiday.getTitle());
 
         log.info("Added entity : [{}] {}", id, holiday.getTitle());
 
@@ -255,10 +263,11 @@ class HolidaysClientIntegrationTestHttpReal {
 
     //@Transactional(propagation = NOT_SUPPORTED)
     @Test
+    //@WithMockUser(username = "user", roles = {"USER"})
     void testGetHoliday() {
         // HTTP-call to real app
         log.info("Fetching Holiday with id = {}", holidayId.get());
-        HolidayResponseDto dto = holidaysClient.getOne(holidayId.get());
+        val dto = holidaysClient.getOne(holidayId.get());
 
         val holidays = holidaysClient.getAllHolidays(); // debug
 

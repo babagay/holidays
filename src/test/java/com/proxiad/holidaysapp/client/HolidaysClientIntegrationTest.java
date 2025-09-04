@@ -1,5 +1,7 @@
 package com.proxiad.holidaysapp.client;
 
+import com.proxiad.holidaysapp.config.TestRestTemplateConfig;
+import com.proxiad.holidaysapp.config.TestSecurityConfig;
 import com.proxiad.holidaysapp.dto.HolidayResponseDto;
 import com.proxiad.holidaysapp.entity.Holiday;
 import com.proxiad.holidaysapp.repository.HolidayRepository;
@@ -12,12 +14,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -113,6 +117,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.yml")
+@Import({TestSecurityConfig.class, TestRestTemplateConfig.class}) // import security config for tests
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY) // ANY (Spring сам настроит базу) или NONE - если использовать свою конфигурацию
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -139,6 +144,12 @@ public class HolidaysClientIntegrationTest {
 
     @LocalServerPort
     private int port;
+
+    @Value("${test.user}")
+    String userName;
+
+    @Value("${test.pass}")
+    String password;
 
 //    @Autowired
 //    private PlatformTransactionManager transactionManager;
@@ -407,10 +418,12 @@ public class HolidaysClientIntegrationTest {
         checkDatabaseConfiguration("testGetOneDirect");
 
         // Прямой запрос к API для проверки
-        ResponseEntity<HolidayResponseDto> response = testRestTemplate.getForEntity(
-                "/holidays/" + id,
-                HolidayResponseDto.class
-        );
+        ResponseEntity<HolidayResponseDto> response = testRestTemplate
+                .withBasicAuth(userName, password)
+                .getForEntity(
+                        "/holidays/" + id,
+                        HolidayResponseDto.class
+                );
 
         log.info("Direct call for id = {}", id);
 

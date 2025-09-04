@@ -3,9 +3,6 @@ server:
 spring:
   datasource:
     url: jdbc:h2:file:~/data/maindb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-#    url: jdbc:h2:file:~/data/demo
-#    url: jdbc:h2:mem:maindb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-#    url: jdbc:h2:tcp://localhost/~/data/demo
     username: sa
     password: password
     driverClassName: org.h2.Driver
@@ -13,8 +10,8 @@ spring:
     init:
       platform: h2
       mode: never # always - exec scripts on each app launch
-#      schema-locations: classpath:schema-h2.sql
-#      data-locations: classpath:data.sql
+  #      schema-locations: classpath:schema-h2.sql
+  #      data-locations: classpath:data.sql
   h2:
     console:
       path: /h2
@@ -25,14 +22,14 @@ spring:
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: update # none
-#    properties:
-#      javax:
-#        persistence:
-#          schema-generation:
-#            scripts:
-#              action: create
-#              create-target: schema.sql
-#              create-source: metadata
+      #    properties:
+      #      javax:
+      #        persistence:
+      #          schema-generation:
+      #            scripts:
+      #              action: create
+      #              create-target: schema.sql
+      #              create-source: metadata
       hibernate:
         format_sql: true # Форматировать SQL для удобного чтения
         dialect: org.hibernate.dialect.H2Dialect
@@ -41,20 +38,8 @@ spring:
     ansi:
       # Включить цветной вывод (для поддержки ANSI в консоли)
       enabled: ALWAYS
-  profiles:
-    active: main
-  security:
-    oauth2:
-      client:
-        registration:
-          github:
-            client-id: Ov23limmgVqE2vtFpTj9
-            client-secret: c46fba89cb52788ef06ca3bbc17add1aad123929
-            scope: user:email, read:user
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-        provider:
-          github:
-            user-name-attribute: id
+#  profiles:
+#    active: test
 logging:
   level:
     root: INFO
@@ -66,13 +51,13 @@ logging:
   # Красивое форматирование логов
 #  pattern:
 #    console: %clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID}){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx
+
+# Test-specific properties
 test:
-  bean:
-    name: SomeTestBean
-rest:
-  template:
-    rootUrl: http://localhost:8080
-holidays:
-  api:
-    path: /holidays
-    path.all: /holidays/all
+  database:
+    replace: none
+  user: testuser
+  pass: testpass
+#rest:
+#  template:
+#    rootUrl: http://localhost:8080

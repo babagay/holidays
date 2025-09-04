@@ -3,6 +3,7 @@ package com.proxiad.holidaysapp.config;
 import com.proxiad.holidaysapp.test_service.TestTransactionalService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -18,6 +19,7 @@ import static org.mockito.Mockito.mock;
 //@Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"com.proxiad.holidaysapp.test_service"})
+@Profile("test")
 public class TransactionalTestConfig {
 
     @Bean

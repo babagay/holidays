@@ -67,8 +67,11 @@ logging:
     org.hibernate.type: TRACE         # Log query parameters
     org.hibernate.stat: DEBUG         # Log Hibernate statistics
     com.proxiad.holidaysapp: DEBUG    # Your application package
+    org.springframework.security.web: DEBUG
 
 # Test-specific properties
 test:
   database:
     replace: none
+  user: testuser
+  pass: testpass

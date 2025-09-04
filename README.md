@@ -98,6 +98,14 @@ It is valid for case when you run 'mvn clean install' command
 
 Note: in case of changes you need to run 'mvn clean install' again to see differences on UI
 
+To develop frontend run UI with React (see command above) and open localhost:3000
+
+To use Postman run App, authenticate using your GitHub account
+Then open dev tools and copy JSESSIONID.
+After that use it in the Postman's Cookie
+
+Note: integration tests use basic auth
+
 ## TODO list 
 * Implement tooltips on events to see the whole Title
 * Implement custom useForm hook

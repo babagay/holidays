@@ -39,6 +39,7 @@ public class HolidaysClient {
     private String root;
 
     public HolidayResponseDto getOne(Integer id) {
+        log.info("Root : {}; Api path : {}", root, holidayPath);
         log.info("Fetching holiday with id: {}", id);
 
         try {

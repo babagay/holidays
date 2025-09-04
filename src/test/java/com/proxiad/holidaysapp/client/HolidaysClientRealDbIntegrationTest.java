@@ -1,14 +1,22 @@
 package com.proxiad.holidaysapp.client;
 
+import com.proxiad.holidaysapp.Util;
+import com.proxiad.holidaysapp.config.TestRestTemplateConfig;
+import com.proxiad.holidaysapp.config.TestSecurityConfig;
 import com.proxiad.holidaysapp.dto.HolidayResponseDto;
 import com.proxiad.holidaysapp.repository.HolidayRepository;
 import jakarta.persistence.EntityManager;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +32,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -60,6 +72,8 @@ import java.util.concurrent.atomic.AtomicReference;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @AutoConfigureTestEntityManager
 @Transactional
+@Import({TestSecurityConfig.class, TestRestTemplateConfig.class}) // import security config for tests
+@ActiveProfiles("test2") // config points real DB
 //@Commit // does not work
 @Slf4j
 public class HolidaysClientRealDbIntegrationTest {
@@ -85,12 +99,25 @@ public class HolidaysClientRealDbIntegrationTest {
     @Autowired
     private PlatformTransactionManager transactionManager;
 
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private Util util;
+
+    @Autowired
+    private Environment env;
+
     private final AtomicInteger holidayId = new AtomicInteger();
 
     private final AtomicReference<String> holidayTitle = new AtomicReference<>();
 
     @BeforeEach
     void setUp() {
+        checkDatabaseConfiguration("HolidaysClientRealDbIntegrationTest");
         var holiday = getTestHoliday("HolidaysClientRealDbIntegrationTest.java");
 
         // dynamically set URL in HolidaysClient
@@ -188,10 +215,64 @@ public class HolidaysClientRealDbIntegrationTest {
         // val all = holidaysClient.getAllHolidays();
         // holidayRepository.findHolidayById(holidayId.get()); // OK
 
-        HolidayResponseDto dto = holidaysClient.getOne(holidayId.get());
+        val dto = holidaysClient.getOne(holidayId.get());
         assertNotNull(dto);
         assertEquals(holidayTitle.get(), dto.getHolidays().getFirst().getTitle());
+
+        log.info("Holiday [{}] title={}", dto.getHolidays().getFirst().getId(), dto.getHolidays().getFirst().getTitle());
     }
 
+    void checkDatabaseConfiguration(String comment) {
+        // Проверка dataSource 1
+        log.info("Active profiles ({}): {}", comment, Arrays.toString(env.getActiveProfiles()));
+        log.info("Datasource URL ({}): {}", comment, env.getProperty("spring.datasource.url"));
+        // Datasource URL: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+
+        // Проверка, какая БД используется
+        Object dataSrc = entityManager.getEntityManagerFactory()
+                .getProperties()
+                .get("javax.persistence.nonJtaDataSource");
+        log.info("DataSource ({}): {}", comment, dataSrc);
+        // HikariDataSource (HikariPool-1) | EmbeddedDataSourceProxy
+        // log.info("Connection: {}", ((HikariDataSource) dataSrc).getConnection());
+        // EmbeddedDataSourceProxy  cannot be cast to class com.zaxxer.hikari.HikariDataSource
+        // HikariProxyConnection@361198803 wrapping conn1: url=jdbc:h2:mem:testdb user=SA
+
+
+        // Проверка dataSource 2
+//        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+//        String url = jdbcTemplate.queryForObject("SELECT CURRENT_URL() FROM DUAL", String.class);
+//        log.info("Current database URL: {}", url);
+        String productName = jdbcTemplate.queryForObject(
+                "SELECT H2VERSION() FROM DUAL", String.class);
+        log.info("Database product ({}): H2 version {}", comment, productName);
+        assertNotNull(productName);
+
+        // Способ 1: Через Environment
+        String datasourceUrl = env.getProperty("spring.datasource.url");
+        log.info("Configured datasource URL: {}", datasourceUrl);
+
+        // Способ 2: Через JdbcTemplate (более надежно)
+        try {
+            String actualUrl = jdbcTemplate.queryForObject("CALL CURRENT_URL()", String.class);
+            log.info("Actual database URL ({}): {}", comment, actualUrl);
+
+            if (!actualUrl.contains("h2:mem")) {
+                log.error("ERROR: Using non-H2 database: {}", actualUrl);
+            } else {
+                log.info("OK: Using H2 in-memory database");
+            }
+        } catch (Exception e) {
+            log.error("Failed to check database connection: {}", e.getMessage());
+        }
+
+        // Способ 3: Проверка через DataSource
+        try (Connection connection = dataSource.getConnection()) {
+            String url = connection.getMetaData().getURL();
+            log.info("DataSource connection URL: {}", url);
+        } catch (SQLException e) {
+            log.error("Failed to get connection: {}", e.getMessage());
+        }
+    }
 
 }

@@ -1,5 +1,7 @@
 package com.proxiad.holidaysapp.client;
 
+import com.proxiad.holidaysapp.config.TestRestTemplateConfig;
+import com.proxiad.holidaysapp.config.TestSecurityConfig;
 import com.proxiad.holidaysapp.repository.HolidayRepository;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManager;
@@ -12,6 +14,8 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -44,6 +48,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Import({TestSecurityConfig.class, TestRestTemplateConfig.class}) // import security config for tests
+@ActiveProfiles("test2") // config points real DB
 //@Transactional
 @Slf4j
 public class HolidaysClientRealDbIntegrationTest2 {
