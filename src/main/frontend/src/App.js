@@ -5,6 +5,7 @@ import YearCalendar from "./components/YearCalendar/YearCalendar";
 import {useState} from "react";
 import HolidayModal from "./components/HolidayModal/HolidayModal";
 import ModifyHolidays from "./components/Holidays/ModifyHolidays";
+import EnhancedStreamTest from "./components/StreamTest/EnhancedStreamTest";
 
 const initHolidayDTO = {
     add: false, update: false, remove: false,
@@ -87,11 +88,13 @@ function App() {
         onFinish: handleHolidayModificationFinish
     };
 
+// <EnhancedStreamTest /> - test the open AI
     return (
-        <div className="Holidays_app">
+        <div className="Holidays_app App">
             <header className="Header">
                 <img src={logo} className="App_logo" alt="logo"/>
             </header>
+            <EnhancedStreamTest />
             <div className="Body">
                 <>
                     <GetHolidays

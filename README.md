@@ -17,13 +17,24 @@ Alterbatively, just start main()
 cd src\main\frontend
 ``` 
 
-#### Run a React application
+#### Run a React application and Hot Swap a React code
 ```
 npm start 
-``` 
-
+```
 check: http://localhost:3000
 
+Note: You should check your changes on port 3000 if you develop UI.
+      On port 8080 there is a compiled static code got from java artifact.
+      Other variant - execute next commands (inside frontend folder; target folder must already exist)
+```
+npm run build 
+Remove-Item -Recurse -Force ..\..\..\target\classes\static\*
+Copy-Item -Recurse -Force build\* ..\..\..\target\classes\static\
+```
+or
+```
+npm run deploy
+```
 
 ## Testing
 ### A quick run case
@@ -117,3 +128,17 @@ npm run storybook
 ```
 Storybook is reachable at http://localhost:6006
 There we can check the appearance of different views of components, e.g. HolidayModal. 
+
+## Oauth2
+After implementing authorization, thee is a bit tricky to test with Postman
+Regular way looks like this
+    In POstman go to Authorization tab
+    Select Oauth 2.0
+    Scroll down
+    Click Get NEw Token button 
+    Authenticate with Git
+    (!) It doesnot work. So use the second way
+    Authenticate with Git via UI
+    Copy Cookie
+    Insert the header in the Postman
+    Switch off authentication (select No Auth in Authorization tab in Postman)

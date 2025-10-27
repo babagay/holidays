@@ -23,13 +23,16 @@
     "swr": "^2.2.2",
     "web-vitals": "^2.1.4"
   },
+  "proxy": "http://localhost:8080",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "deploy": "npm run build && npm run copy-to-spring:win && echo Deployment completed! Open http://localhost:8080",
+    "copy-to-spring:win": "if exist \"..\\..\\..\\target\\classes\\static\" ( rmdir /s /q \"..\\..\\..\\target\\classes\\static\" ) && mkdir \"..\\..\\..\\target\\classes\\static\" && xcopy /E /I /Y \"build\\*\" \"..\\..\\..\\target\\classes\\static\\\" && echo ✅ React build deployed to Spring Boot!"
   },
   "eslintConfig": {
     "extends": [

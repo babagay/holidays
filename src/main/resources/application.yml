@@ -55,9 +55,21 @@ spring:
         provider:
           github:
             user-name-attribute: id
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY:}
+      base-url: https://api.openai.com/v1
+      chat:
+        options:
+          model: "gpt-4o-mini"
+          temperature: 0.7
+          max-tokens: 1000
+chat:
+  default-model: "gpt-4"
+  default-temperature: 0.8
 logging:
   level:
-    root: INFO
+    root: DEBUG
     org.springframework: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
@@ -76,3 +88,6 @@ holidays:
   api:
     path: /holidays
     path.all: /holidays/all
+
+
+

@@ -41,4 +41,7 @@ public class CorsConfig implements WebMvcConfigurer {
 //        return new CorsFilter(source);
 //    }
 
+    // solution 3
+    // Add @CrossOrigin directly in controller
+
 }
